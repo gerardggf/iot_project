@@ -1,16 +1,34 @@
-# iot_project
+Bluetooth Classic:
+- Orientado a transmisión continua
+- Alto consumo energético
+- Tiempo de conexión más lento
+- Basado en perfiles como A2DP, HFP, SPP
+- Usado en auriculares, altavoces, mandos, manos libres, etc.
 
-A new Flutter project.
+Bluetooth Low Energy (BLE):
+- Diseñado para conexiones rápidas y esporádicas
+- Muy bajo consumo energético
+- Ideal para dispositivos con batería pequeña o sensores
+- Comunicación basada en una arquitectura llamada GATT
+- Soporta "advertising": puede emitir información sin estar conectado
 
-## Getting Started
+    Profile -> Servicio -> Característica -> Descriptor
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Ejemplo: 
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Profile:
+ └─ Service: Heart Rate Service (UUID: 0x180D)
+     └─ Characteristic: Heart Rate Measurement (UUID: 0x2A37)
+         ├─ Valor: 72 (pulsaciones por minuto)
+         ├─ Descriptor 0x2901: "Heart Rate"
+         └─ Descriptor 0x2902: habilita notificaciones
+
+ └─ Service: Battery Service (UUID: 0x180F)
+     └─ Characteristic: Battery Level (UUID: 0x2A19)
+         ├─ Valor: 91 (%)
+         ├─ Descriptor 0x2901: "Battery Level"
+         └─ Descriptor 0x2902: habilita notificaciones
+
+

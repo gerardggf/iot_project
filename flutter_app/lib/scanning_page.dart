@@ -85,8 +85,9 @@ class _ScanningPageState extends ConsumerState<ScanningPage> {
                     final timeout = 5;
                     await FlutterBluePlus.startScan(
                         timeout: Duration(seconds: timeout));
-                    if (!context.mounted) return;
+
                     await Future.delayed(Duration(seconds: timeout), () {
+                      if (!context.mounted) return;
                       setState(() {
                         isScanning = false;
                       });

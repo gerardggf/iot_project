@@ -31,6 +31,7 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
+flutter_app/build/
 /build/
 
 # Symbolication related
@@ -40,6 +41,10 @@ app.*.symbols
 app.*.map.json
 
 # Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+flutter_app/android/app/debug
+flutter_app/android/app/profile
+flutter_app/android/app/release
+
+# Generated files
+*.g.dart
+*.freezed.dart

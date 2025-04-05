@@ -1,34 +1,45 @@
-Bluetooth Classic:
-- Orientado a transmisión continua
-- Alto consumo energético
-- Tiempo de conexión más lento
-- Basado en perfiles como A2DP, HFP, SPP
-- Usado en auriculares, altavoces, mandos, manos libres, etc.
+# ESP32 + Flutter BLE LED Control
 
-Bluetooth Low Energy (BLE):
-- Diseñado para conexiones rápidas y esporádicas
-- Muy bajo consumo energético
-- Ideal para dispositivos con batería pequeña o sensores
-- Comunicación basada en una arquitectura llamada GATT
-- Soporta "advertising": puede emitir información sin estar conectado
+This project connects an ESP32 with a Flutter app using Bluetooth Low Energy (BLE) to control an LED. The ESP32 runs a BLE server and exposes a writable characteristic. The Flutter app connects and sends `1` or `0` to turn the LED on or off.
 
-    Profile -> Servicio -> Característica -> Descriptor
+---
 
+## Hardware
 
+ESP32 GPIO2 ---> 220Ω resistor ---> LED anode (+) 
+ESP32 GND ------------------------> LED cathode (-)
 
-Ejemplo: 
+- Use a 220Ω resistor to avoid damaging the LED.
+- Anode (+) = long leg -> GPIO2 via the resistor  
+- Cathode (-) = short leg -> directly to GND
 
-Profile:
- └─ Service: Heart Rate Service (UUID: 0x180D)
-     └─ Characteristic: Heart Rate Measurement (UUID: 0x2A37)
-         ├─ Valor: 72 (pulsaciones por minuto)
-         ├─ Descriptor 0x2901: "Heart Rate"
-         └─ Descriptor 0x2902: habilita notificaciones
+---
 
- └─ Service: Battery Service (UUID: 0x180F)
-     └─ Characteristic: Battery Level (UUID: 0x2A19)
-         ├─ Valor: 91 (%)
-         ├─ Descriptor 0x2901: "Battery Level"
-         └─ Descriptor 0x2902: habilita notificaciones
+## Uploading the Arduino Firmware
 
+1. Open the file `iot_project.ino` in Arduino IDE
+2. Go to "Tools" -> "Board" and select your board (in my case "ESP32-WROOM-DA module")
+3. Go to "Tools" -> "Ports" and select the correct serial port ("/dev/cu.usbserial-xxxx...")
+4. Go to "Tools" -> "Upload Speed" and set it to 115200
+5. Click "Upload" (arrow icon)
+6. Open the "Serial Monitor" (also at 115200 baud) to see connection and command logs
 
+When a BLE device connects or disconnects, or you send a "0" or "1", you’ll see a message on the Serial monitor.
+
+---
+
+## Running the Flutter App
+
+1. Navigate to the Flutter app directory in VS Code:
+
+```bash
+cd flutter_app
+```
+
+Connect a physical Android device or start an emulator
+
+Run the app in debug mode:
+
+```bash
+flutter run
+```

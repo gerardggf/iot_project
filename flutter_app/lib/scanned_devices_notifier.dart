@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
-/// We create a provider to listen and save the results and pass it to the scanning page,
+/// We create a state notifier provider to listen and save the results and pass it to the scanning page,
 /// until we press the button to scan the devices again
 final scannedDevicesProvider =
     StateNotifierProvider<ScannedDevicesNotifier, List<ScanResult>>(

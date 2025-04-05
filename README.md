@@ -6,7 +6,7 @@ This project connects an ESP32 with a Flutter app using Bluetooth Low Energy (BL
 
 ## Hardware
 
-ESP32 GPIO2 ---> 220Ω resistor ---> LED anode (+) 
+ESP32 GPIO2 (D2) ---> 220Ω resistor ---> LED anode (+) 
 ESP32 GND ------------------------> LED cathode (-)
 
 - Use a 220Ω resistor to avoid damaging the LED.
@@ -24,7 +24,7 @@ ESP32 GND ------------------------> LED cathode (-)
 5. Click "Upload" (arrow icon)
 6. Open the "Serial Monitor" (also at 115200 baud) to see connection and command logs
 
-When a BLE device connects or disconnects, or you send a "0" or "1", you’ll see a message on the Serial monitor.
+When a BLE device connects or disconnects, or you send a "0" or "1", you will see a message on the Serial monitor.
 
 ---
 
@@ -43,3 +43,7 @@ Run the app in debug mode:
 ```bash
 flutter run
 ```
+
+## Contact
+
+For any questions, you can contact me at: gerard.ggf@gmail.com

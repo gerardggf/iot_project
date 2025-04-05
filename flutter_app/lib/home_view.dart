@@ -4,10 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iot_project/connected_device_page.dart';
 import 'package:iot_project/scanning_page.dart';
 
-final scannedResultsStreamProvider = StreamProvider<List<ScanResult>>(
-  (ref) => FlutterBluePlus.scanResults,
-);
-
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'home_view.dart';
+import 'scanned_devices_notifier.dart';
 
 class ScanningPage extends ConsumerStatefulWidget {
   const ScanningPage({
@@ -10,6 +10,7 @@ class ScanningPage extends ConsumerStatefulWidget {
     required this.onSelectedDevice,
   });
 
+  /// this function is called when a device is selected
   final void Function(ScanResult result) onSelectedDevice;
 
   @override
@@ -21,48 +22,27 @@ class _ScanningPageState extends ConsumerState<ScanningPage> {
 
   @override
   Widget build(BuildContext context) {
-    final scannedResultsStream = ref.watch(scannedResultsStreamProvider);
+    final scannedDevices = ref.watch(scannedDevicesProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
-          child: !isScanning
-              ? const SizedBox(
-                  width: double.infinity,
-                )
-              : scannedResultsStream.when(
-                  data: (results) {
-                    return ListView.builder(
-                      itemCount: results.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index == results.length) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        if (results[index].device.advName.isEmpty) {
-                          return const SizedBox();
-                        }
-
-                        return ListTile(
-                          leading: Icon(Icons.bluetooth),
-                          onTap: () => widget.onSelectedDevice(
-                            results[index],
-                          ),
-                          title: Text(results[index].device.advName),
-                        );
-                      },
-                    );
-                  },
-                  error: (e, _) {
-                    return Text('An error has occurred: $e');
-                  },
-                  loading: () {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
+          child: ListView.builder(
+            itemCount: scannedDevices.length,
+            itemBuilder: (context, index) {
+              if (scannedDevices[index].device.advName.isEmpty) {
+                return const SizedBox();
+              }
+              ////we trigger the onSelectedDevice function when a device is selected
+              return ListTile(
+                leading: Icon(Icons.bluetooth),
+                onTap: () => widget.onSelectedDevice(
+                  scannedDevices[index],
                 ),
+                title: Text(scannedDevices[index].device.advName),
+              );
+            },
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(30),
@@ -78,6 +58,8 @@ class _ScanningPageState extends ConsumerState<ScanningPage> {
                 )
               : ElevatedButton(
                   onPressed: () async {
+                    //we clear the list of devices
+                    ref.read(scannedDevicesProvider.notifier).clear();
                     setState(() {
                       isScanning = true;
                     });
@@ -86,6 +68,7 @@ class _ScanningPageState extends ConsumerState<ScanningPage> {
                     await FlutterBluePlus.startScan(
                         timeout: Duration(seconds: timeout));
 
+                    //the variable "isScanning" is updated if the timeout expires
                     await Future.delayed(Duration(seconds: timeout), () {
                       if (!context.mounted) return;
                       setState(() {

@@ -39,6 +39,8 @@ class ServerCallbacks : public BLEServerCallbacks {
 
   void onDisconnect(BLEServer* pServer) override {
     Serial.println("Device disconnected");
+    //we make it scannable again
+    BLEDevice::startAdvertising();
   }
 };
 

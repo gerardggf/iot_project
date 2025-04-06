@@ -1,36 +1,30 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ConnectedDevicePage extends StatelessWidget {
+import '../connected_device_controller.dart';
+
+class ConnectedDevicePage extends ConsumerWidget {
   const ConnectedDevicePage({
     super.key,
-    required this.connectedDevice,
-    required this.onDisconnect,
   });
 
-  ///this functionis called when the disconnect button is pressed
-  ///
-  ///this is the same as "void Function()"
-  final VoidCallback onDisconnect;
-
-  ///this is the device that is connected
-  final BluetoothDevice connectedDevice;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final deviceState = ref.watch(connectedDeviceControllerProvider)!;
+    final deviceNotifier = ref.read(connectedDeviceControllerProvider.notifier);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           //we show the name of the device
-          Text('Connected to: ${connectedDevice.advName}'),
+          Text('Connected to: ${deviceState.advName}'),
           const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () async {
               //discover the services
-              final services = await connectedDevice.discoverServices();
+              final services = await deviceState.discoverServices();
               //find the service
               final service = services.firstWhere(
                   (e) => e.uuid.str == "12345678-1234-1234-1234-1234567890ab");
@@ -47,7 +41,7 @@ class ConnectedDevicePage extends StatelessWidget {
               // here we are doing the same thing as above.
               // It's not the most efficient way to repeat this code,
               // but it keeps things simple and easy to follow
-              final services = await connectedDevice.discoverServices();
+              final services = await deviceState.discoverServices();
               final service = services.firstWhere(
                   (e) => e.uuid.str == "12345678-1234-1234-1234-1234567890ab");
               final characteristic = service.characteristics.firstWhere(
@@ -61,7 +55,9 @@ class ConnectedDevicePage extends StatelessWidget {
           ),
           //we show the disconnect button and trigger the onDisconnect function when it is pressed
           ElevatedButton(
-            onPressed: onDisconnect,
+            onPressed: () async {
+              await deviceNotifier.disconnect();
+            },
             child: Text('Disconnect'),
           ),
         ],

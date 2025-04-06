@@ -6,7 +6,8 @@ This project connects an ESP32 with a Flutter app using Bluetooth Low Energy (BL
 
 ## Hardware
 
-ESP32 GPIO2 (D2) ---> 220Ω resistor ---> LED anode (+) 
+ESP32 GPIO2 (D2) ---> 220Ω resistor ---> LED anode (+)
+
 ESP32 GND ------------------------> LED cathode (-)
 
 - Use a 220Ω resistor to avoid damaging the LED.
@@ -36,10 +37,15 @@ When a BLE device connects or disconnects, or you send a "0" or "1", you will se
 cd flutter_app
 ```
 
-Connect a physical Android device or start an emulator
+2. Get the dependencies:
+```bash
+flutter pub get
+```
 
-Run the app in debug mode:
+3. Connect a physical Android device or start an emulator.
 
+
+4. Run the app in debug mode:
 ```bash
 flutter run
 ```
